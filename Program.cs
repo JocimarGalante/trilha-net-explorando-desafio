@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using System.Collections.Generic;
 using DesafioProjetoHospedagem.Models;
 
 Console.OutputEncoding = Encoding.UTF8;
@@ -16,10 +18,29 @@ hospedes.Add(p2);
 Suite suite = new Suite(tipoSuite: "Premium", capacidade: 2, valorDiaria: 30);
 
 // Cria uma nova reserva, passando a suíte e os hóspedes
-Reserva reserva = new Reserva(diasReservados: 5);
-reserva.CadastrarSuite(suite);
-reserva.CadastrarHospedes(hospedes);
+Reserva reserva = new Reserva(diasReservados: 10); // Alterado para 10 dias para testar o desconto
+try
+{
+    reserva.CadastrarSuite(suite);
+    reserva.CadastrarHospedes(hospedes);
 
-// Exibe a quantidade de hóspedes e o valor da diária
-Console.WriteLine($"Hóspedes: {reserva.ObterQuantidadeHospedes()}");
-Console.WriteLine($"Valor diária: {reserva.CalcularValorDiaria()}");
+    // Exibe informações da reserva
+    Console.WriteLine("=== Detalhes da Reserva ===");
+    Console.WriteLine($"Tipo de Suíte: {reserva.Suite.TipoSuite}");
+    Console.WriteLine($"Capacidade: {reserva.Suite.Capacidade} hóspedes");
+    Console.WriteLine($"Valor da Diária: R$ {reserva.Suite.ValorDiaria}");
+    Console.WriteLine($"Dias Reservados: {reserva.DiasReservados}");
+    Console.WriteLine($"Hóspedes: {reserva.ObterQuantidadeHospedes()}");
+    
+    Console.WriteLine("\nLista de Hóspedes:");
+    foreach (var hospede in reserva.Hospedes)
+    {
+        Console.WriteLine($"- {hospede.NomeCompleto}");
+    }
+    
+    Console.WriteLine($"\nValor total da estadia: R$ {reserva.CalcularValorDiaria()}");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Erro: {ex.Message}");
+}
